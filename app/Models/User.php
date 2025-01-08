@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+// Laravel modullari va Spatie roli funksiyalarini ulash
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -11,47 +11,52 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable , HasRoles;
+    use HasFactory, Notifiable, HasRoles;
 
     /**
-     * The attributes that are mass assignable.
+     * Jadvalga kiritilishi mumkin bo‘lgan ustunlar
      *
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
+        'name', // Foydalanuvchi ismi
+        'email', // Foydalanuvchi emaili
+        'password', // Foydalanuvchi paroli
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
+     * Seriyalizatsiya uchun yashirilishi kerak bo‘lgan ustunlar
      *
      * @var array<int, string>
      */
     protected $hidden = [
-        'password',
-        'remember_token',
+        'password', // Parol yashiriladi
+        'remember_token', // "Remember Me" token yashiriladi
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * Jadval ustunlari ma'lumotlarini kasting qilish.
      *
      * @return array<string, string>
      */
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            'email_verified_at' => 'datetime', // Email tasdiqlash vaqti
+            'password' => 'hashed', // Parolni avtomatik hashlash
         ];
     }
 
     /**
-     * Get the actual music items the user has liked.
+     * Foydalanuvchi yoqtirgan musiqalarni olish.
      */
     public function likedMusicItems()
     {
-        return $this->belongsToMany(Music::class, 'liked_musics', 'user_id', 'music_id');
+        return $this->belongsToMany(
+            Music::class, // Musiqa modeli bilan bog‘lanish
+            'liked_musics', // O‘rta jadval nomi
+            'user_id', // O‘rta jadvalda foydalanuvchi ID ustuni
+            'music_id' // O‘rta jadvalda musiqa ID ustuni
+        );
     }
 }

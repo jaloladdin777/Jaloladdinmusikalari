@@ -9,28 +9,30 @@ class UserSeeder extends Seeder
 {
     public function run()
     {
-        // Create roles if they don't exist
-        $adminRole = Role::create(['name' => 'admin']);
-        $userRole = Role::create(['name' => 'user']);
+        // Agar ro‘llar mavjud bo‘lmasa, ularni yaratish
+        $adminRole = Role::create(['name' => 'admin']); // Admin roli
+        $userRole = Role::create(['name' => 'user']); // Foydalanuvchi roli
 
-        // Create Admin User
+        // Admin foydalanuvchisini yaratish
         $admin = User::firstOrCreate(
-            ['email' => 'admin@example.com'],
+            ['email' => 'admin@example.com'], // Email bo‘yicha tekshirish
             [
-                'name' => 'Admin User',
-                'password' => bcrypt('password'), // Replace with a secure password
+                'name' => 'Admin User', // Admin ismi
+                'password' => bcrypt('password'), // Parolni hash qilish (Yaxshi parol bilan almashtiring)
             ]
         );
+        // Admin foydalanuvchisiga "admin" rolini biriktirish
         $admin->assignRole($adminRole);
 
-        // Create Regular User
+        // Oddiy foydalanuvchini yaratish
         $user = User::firstOrCreate(
-            ['email' => 'user@example.com'],
+            ['email' => 'user@example.com'], // Email bo‘yicha tekshirish
             [
-                'name' => 'Regular User',
-                'password' => bcrypt('password'), // Replace with a secure password
+                'name' => 'Regular User', // Oddiy foydalanuvchi ismi
+                'password' => bcrypt('password'), // Parolni hash qilish (Yaxshi parol bilan almashtiring)
             ]
         );
+        // Oddiy foydalanuvchiga "user" rolini biriktirish
         $user->assignRole($userRole);
     }
 }

@@ -8,24 +8,28 @@ class Music extends Model
 {
     use HasFactory;
 
+    // Jadvalga kiritilishi mumkin bo‘lgan ustunlar
     protected $fillable = [
-        'name',
-        'artist',
-        'file',
-        'user_id',
-        'admin_confirmed',
+        'name', // Musiqa nomi
+        'artist', // Artist nomi
+        'file', // Fayl yo‘li
+        'user_id', // Musiqani yuklagan foydalanuvchi ID si
+        'admin_confirmed', // Admin tomonidan tasdiqlanganligini ko‘rsatadi
     ];
 
     /**
-     * The user who uploaded the music.
+     * Musiqani yuklagan foydalanuvchini olish.
      */
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class); // "Music" foydalanuvchi bilan bog‘langan
     }
 
+    /**
+     * Ushbu musiqani yoqtirgan foydalanuvchilarni olish.
+     */
     public function likedMusics()
     {
-        return $this->hasMany(LikedMusic::class);
+        return $this->hasMany(LikedMusic::class); // "Music" yoqtirilgan musiqalar bilan bog‘langan
     }
 }

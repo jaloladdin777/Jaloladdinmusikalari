@@ -7,26 +7,29 @@ use Illuminate\Database\Eloquent\Model;
 class LikedMusic extends Model
 {
     use HasFactory;
-    protected $table = 'liked_musics'; // Ensure the table name matches the migration
+
+    // Jadval nomi
+    protected $table = 'liked_musics'; // Jadval nomi migratsiya faylidagi nom bilan mos ekanligini tekshiring
+
+    // Jadvalga kiritilishi mumkin bo‘lgan ustunlar
     protected $fillable = [
-        'user_id',
-        'music_id',
+        'user_id', // Foydalanuvchi ID si
+        'music_id', // Musiqa ID si
     ];
 
     /**
-     * Get the user who liked the music.
+     * Musiqani yoqtirgan foydalanuvchini olish
      */
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class); // "LikedMusic" foydalanuvchi bilan bog‘langan
     }
 
     /**
-     * Get the music that was liked.
+     * Yoqtirilgan musiqani olish
      */
     public function music()
     {
-        return $this->belongsTo(Music::class);
+        return $this->belongsTo(Music::class); // "LikedMusic" musiqa bilan bog‘langan
     }
-
 }

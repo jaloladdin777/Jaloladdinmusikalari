@@ -9,19 +9,19 @@ class RoleSeeder extends Seeder
 {
     public function run()
     {
-        // Create roles
-        $adminRole = Role::firstOrCreate(['name' => 'admin']);
-        $userRole = Role::firstOrCreate(['name' => 'user']);
+        // Rollarni yaratish (agar mavjud bo‘lmasa)
+        $adminRole = Role::firstOrCreate(['name' => 'admin']); // Admin roli
+        $userRole = Role::firstOrCreate(['name' => 'user']); // Foydalanuvchi roli
 
-        // Assign roles to users
-        $admin = User::find(1); // Adjust the user ID as needed
+        // Foydalanuvchilarga rollarni biriktirish
+        $admin = User::find(1); // Admin foydalanuvchini olish (ID ni loyihangizga moslang)
         if ($admin) {
-            $admin->assignRole($adminRole);
+            $admin->assignRole($adminRole); // Admin rolini biriktirish
         }
 
-        $user = User::find(2); // Adjust the user ID as needed
+        $user = User::find(2); // Oddiy foydalanuvchini olish (ID ni loyihangizga moslang)
         if ($user) {
-            $user->assignRole($userRole);
+            $user->assignRole($userRole); // Foydalanuvchi rolini biriktirish
         }
     }
 }

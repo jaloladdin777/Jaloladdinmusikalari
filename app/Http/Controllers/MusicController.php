@@ -8,47 +8,55 @@ use Illuminate\Support\Facades\Auth;
 
 class MusicController extends Controller
 {
-    // List all music for the logged-in user
+    // Tizimga kirgan foydalanuvchi uchun barcha musiqalarni ko‘rsatish
     public function index()
     {
+        // Foydalanuvchiga tegishli musiqalarni olish
         $music = Music::where('user_id', Auth::id())->get();
+
+        // "music.index" ko‘rinishini ochish va musiqalar ro‘yxatini uzatish
         return view('music.index', compact('music'));
     }
 
-    // Store new music
+    // Yangi musiqa qo‘shish
     public function store(Request $request)
     {
+        // Foydalanuvchi kiritgan ma'lumotlarni tekshirish
         $request->validate([
-            'name' => 'required|string|max:255',
-            'artist' => 'required|string|max:255',
-            'file' => 'required|file|mimes:mp3,wav,aac|max:2048'
+            'name' => 'required|string|max:255', // Musiqa nomi talab qilinadi
+            'artist' => 'required|string|max:255', // Artist ismi talab qilinadi
+            'file' => 'required|file|mimes:mp3,wav,aac|max:2048' // Faqat audio fayllar qabul qilinadi
         ]);
 
-        // Store the uploaded file
+        // Yuklangan faylni saqlash
         $filePath = $request->file('file')->store('music', 'public');
-        // Create the music record
+
+        // Musiqa yozuvini yaratish
         Music::create([
             'name' => $request->name,
             'artist' => $request->artist,
-            'file' => $filePath,
-            'user_id' => Auth::id(),
-            'admin_confirmed' => false, // Default to not confirmed
+            'file' => $filePath, // Saqlangan fayl yo‘li
+            'user_id' => Auth::id(), // Tizimga kirgan foydalanuvchi ID si
+            'admin_confirmed' => false, // Yangi musiqalar admin tasdiqlashini kutadi
         ]);
 
-        return redirect()->route('home')->with('success', 'Music added successfully!');
+        // Foydalanuvchini asosiy sahifaga yo‘naltirish
+        return redirect()->route('home')->with('success', 'Musiqa muvaffaqiyatli qo‘shildi!');
     }
 
-    // Delete music
+    // Musiqani o‘chirish
     public function destroy($id)
     {
+        // Berilgan ID bo‘yicha musiqani topish
         $music = Music::findOrFail($id);
 
-        // Delete the file from storage
+        // Saqlangan faylni o‘chirish
         Storage::disk('public')->delete($music->file);
 
-        // Delete the music record
+        // Musiqa yozuvini o‘chirish
         $music->delete();
 
-        return redirect()->route('home')->with('success', 'Music deleted successfully!');
+        // Foydalanuvchini asosiy sahifaga yo‘naltirish
+        return redirect()->route('home')->with('success', 'Musiqa muvaffaqiyatli o‘chirildi!');
     }
 }
